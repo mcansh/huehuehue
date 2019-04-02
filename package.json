@@ -9,7 +9,10 @@
   "scripts": {
     "dev": "next -p 5000",
     "build": "next build",
-    "start": "next start"
+    "start": "next start",
+    "type-check": "yarn tsc",
+    "lint": "eslint ./ --ext .js,.ts,.tsx",
+    "validate": "yarn type-check && yarn lint"
   },
   "dependencies": {
     "@zeit/next-typescript": "1.1.1",
