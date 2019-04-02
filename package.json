@@ -14,6 +14,18 @@
     "lint": "eslint ./ --ext .js,.ts,.tsx",
     "validate": "yarn type-check && yarn lint"
   },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx}": [
+      "eslint --fix",
+      "tsc",
+      "git add"
+    ]
+  },
   "dependencies": {
     "@zeit/next-typescript": "1.1.1",
     "babel-plugin-root-import": "6.1.0",
@@ -49,6 +61,8 @@
     "eslint-plugin-promise": "4.1.1",
     "eslint-plugin-react": "7.12.4",
     "eslint-plugin-react-hooks": "1.6.0",
+    "husky": "1.3.1",
+    "lint-staged": "8.1.5",
     "typescript": "3.4.1"
   }
 }
