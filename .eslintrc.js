@@ -6,4 +6,10 @@ module.exports = {
       typescript: {},
     },
   },
+  overrides: {
+    files: ['*.js', '.*.js'],
+    rules: {
+      '@typescript-eslint/no-var-requires': 'off',
+    },
+  },
 };
