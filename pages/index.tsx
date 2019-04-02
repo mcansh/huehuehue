@@ -19,7 +19,7 @@ Index.getInitialProps = async () => {
   const promise = await fetch(`${process.env.HUE_BRIDGE_API}/lights`);
   const lightsObject = await promise.json();
   const lights = Object.entries(lightsObject).map(light => ({
-    lightId: light[0],
+    hueId: Number(light[0]),
     ...light[1],
   }));
 
