@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import { desaturate } from 'polished';
 import LightProps from '~/types/light';
-import updateLight from '~/utils/update-light';
+import { updateLight } from '~/utils/update-lights';
 
 const LightStyles = styled.div`
   margin: 2rem;
