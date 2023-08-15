@@ -22,8 +22,6 @@ export function connectToBridge() {
     .connect(env.HUE_BRIDGE_USERNAME);
 }
 
-// export let api = await connectToBridge()
-
 declare global {
   var __api__: Awaited<ReturnType<typeof connectToBridge>>;
 }
@@ -38,5 +36,7 @@ export let api = global.__api__;
 
 export type LightState = typeof v3.lightStates.LightState;
 export type LightType = Awaited<ReturnType<typeof api.lights.getAll>>[number];
+export type GroupLightState = typeof v3.lightStates.GroupLightState;
 
 export let LightState = v3.lightStates.LightState;
+export let GroupLightState = v3.lightStates.GroupLightState;
