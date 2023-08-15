@@ -61,19 +61,19 @@ export async function loader() {
   }
 }
 
-let schema = z.object({
-  id: z.string(),
-  status: z.string().transform((val) => val === "true"),
-  hydrated: z
-    .string()
-    .optional()
-    .transform((val) => val === "true"),
-});
-
 export async function action({ request }: DataFunctionArgs) {
   let formData = await request.formData();
 
   let api = await connectToBridge();
+
+  let schema = z.object({
+    id: z.string(),
+    status: z.string().transform((val) => val === "true"),
+    hydrated: z
+      .string()
+      .optional()
+      .transform((val) => val === "true"),
+  });
 
   let result = schema.parse(Object.fromEntries(formData.entries()));
 
@@ -84,7 +84,7 @@ export async function action({ request }: DataFunctionArgs) {
   await new Promise((resolve) => setTimeout(resolve, 2_000));
 
   if (result.hydrated) {
-    return json({ id: result.id, status: result.status });
+    return json({ id: result.id, status: response as unknown as boolean });
   }
   return redirect("/");
 }
@@ -108,7 +108,7 @@ export default function Index() {
               <dd>
                 <ul>
                   {lights.map((light) => {
-                    return <LightToggle light={light} />;
+                    return <LightToggle key={light.id} light={light} />;
                   })}
                 </ul>
               </dd>
@@ -126,14 +126,20 @@ function LightToggle({
   light: SerializeFrom<typeof loader>["lights"][string][number];
 }) {
   let fetcher = useFetcher<SerializeFrom<typeof action>>();
-  let status =
-    fetcher.data?.status !== undefined ? fetcher.data.status : light.status;
+  let inflight = fetcher.state === "submitting";
+  let status = fetcher.formData?.has("status")
+    ? fetcher.formData?.get("status") === "true"
+    : light.status;
 
   return (
-    <li key={light.id}>
-      <fetcher.Form method="post" className="space-x-2">
-        <input type="checkbox" name="on" defaultChecked={status} readOnly />
-        <input type="hidden" name="id" value={light.id} readOnly={true} />
+    <li className={inflight ? "font-bold" : ""}>
+      <fetcher.Form method="post" className="space-x-2 flex items-center">
+        <input
+          type="checkbox"
+          className={inflight ? "accent-slate-400" : ""}
+          defaultChecked={status}
+          readOnly
+        />
         <input
           type="hidden"
           name="status"
@@ -143,16 +149,8 @@ function LightToggle({
         <ClientOnly>
           {() => <input type="hidden" name="hydrated" value="true" />}
         </ClientOnly>
-        <button
-          type="submit"
-          className={
-            fetcher.state === "submitting" &&
-            fetcher.formData?.get("id") === String(light.id)
-              ? "font-bold"
-              : ""
-          }
-        >
-          {light.name} ({light.type})
+        <button type="submit" name="id" value={light.id}>
+          {light.name}
         </button>
       </fetcher.Form>
     </li>
