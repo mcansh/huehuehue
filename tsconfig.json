@@ -1,28 +1,20 @@
 {
+  "include": ["remix.env.d.ts", "**/*.ts", "**/*.tsx"],
   "compilerOptions": {
-    "target": "esnext",
-    "module": "esnext",
-    "jsx": "preserve",
-    "lib": [
-      "dom",
-      "es2017"
-    ],
+    "forceConsistentCasingInFileNames": true,
+    "lib": ["DOM", "DOM.Iterable", "ESNext"],
+    "esModuleInterop": true,
+    "jsx": "react-jsx",
     "moduleResolution": "node",
-    "allowJs": true,
-    "noEmit": true,
-    "allowSyntheticDefaultImports": true,
-    "skipLibCheck": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
-    "removeComments": false,
-    "preserveConstEnums": true,
-    "sourceMap": true,
-    "resolveJsonModule": true,
-    "baseUrl": ".",
+    "target": "ESNext",
+    "strict": true,
     "paths": {
-      "~/*": [
-        "./*"
-      ]
-    }
+      "~/*": ["./app/*"]
+    },
+
+    // Remix takes care of building everything in `remix build`.
+    "noEmit": true,
+
+    "types": ["@total-typescript/ts-reset"]
   }
 }

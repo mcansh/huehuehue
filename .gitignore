@@ -1,2 +1,7 @@
 node_modules
-.next
+.cache
+public/build
+build
+app/styles
+.env
+.eslintcache
